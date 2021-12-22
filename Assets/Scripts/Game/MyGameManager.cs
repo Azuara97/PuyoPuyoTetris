@@ -10,12 +10,19 @@ public class MyGameManager : MonoBehaviour
     static int height = 16;
     Vector3 spawnPosition;
     Transform[,] grid = new Transform[width, height + 3];
-    List<Transform> puyos = new List<Transform>();
+    List<Puyo> puyos = new List<Puyo>();
+    [SerializeField]
+    float grayProbability = 5f;
+    [SerializeField]
+    float bombProbability = 5f;
 
     //Score
     int score = 0;
     int puyosDestroyed = 0;
     int pointsPerPuyo = 10;
+
+    //Other
+    enum colors { red, green, blue, yellow, purple, gray, bomb }
 
     void Start()
     {
@@ -45,7 +52,10 @@ public class MyGameManager : MonoBehaviour
         int y = Mathf.RoundToInt(puyo.transform.position.y);
 
         grid[x, y] = puyo;
-        puyos.Clear();
+    }
+    public void ClearPlaceInGrid(int x, int y)
+    {
+        grid[x, y] = null;
     }
     public bool CheckPlaceInGrid(int x, int y)
     {
@@ -61,9 +71,272 @@ public class MyGameManager : MonoBehaviour
     }
 
     //----------Count----------
-    public void CountPuyo(Transform puyo)
+    void ClearPuyos()
+    {
+        puyos.Clear();
+    }
+    void FallPuyos()
+    {
+        for (int j = 0; j < width; j++)
+        {
+            for(int i = 0; i < height; i++)
+            {
+                if (grid[j, i] != null)
+                {
+                    var puyo = GetPuyo(j, i);
+                    while (puyo.CheckPlaceBelow())
+                    {
+                        int x = Mathf.RoundToInt(puyo.transform.position.x);
+                        int y = Mathf.RoundToInt(puyo.transform.position.y);
+
+                        puyo.transform.position += new Vector3(0f, -1f, 0f);
+                        grid[x, y - 1] = puyo.transform;
+                        grid[x, y] = null;
+                    }
+                }
+            }
+        }
+    }
+    void BombDestroy(Puyo bomb)
+    {
+        int x = Mathf.RoundToInt(bomb.transform.position.x);
+        int y = Mathf.RoundToInt(bomb.transform.position.y);
+
+        if (x == 0 & y == 0)
+        {
+            if (CheckPlaceInGrid(x + 1, y + 1))
+            {
+                Destroy(GetPuyo(x + 1, y + 1).gameObject);
+                grid[x + 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y))
+            {
+                Destroy(GetPuyo(x + 1, y).gameObject);
+                grid[x + 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x, y + 1))
+            {
+                Destroy(GetPuyo(x, y + 1).gameObject);
+                grid[x, y + 1] = null;
+            }
+        }
+        else if (x == 0 && y == height)
+        {
+            if (CheckPlaceInGrid(x + 1, y - 1))
+            {
+                Destroy(GetPuyo(x + 1, y - 1).gameObject);
+                grid[x + 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y))
+            {
+                Destroy(GetPuyo(x + 1, y).gameObject);
+                grid[x + 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x, y - 1))
+            {
+                Destroy(GetPuyo(x, y - 1).gameObject);
+                grid[x, y - 1] = null;
+            }
+        }
+        else if (x == width && y == 0)
+        {
+            if (CheckPlaceInGrid(x - 1, y + 1))
+            {
+                Destroy(GetPuyo(x - 1, y + 1).gameObject);
+                grid[x - 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y))
+            {
+                Destroy(GetPuyo(x - 1, y).gameObject);
+                grid[x - 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x, y + 1))
+            {
+                Destroy(GetPuyo(x, y + 1).gameObject);
+                grid[x, y + 1] = null;
+            }
+        }
+        else if (x == width && y == height)
+        {
+            if (CheckPlaceInGrid(x - 1, y - 1))
+            {
+                Destroy(GetPuyo(x - 1, y - 1).gameObject);
+                grid[x - 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y))
+            {
+                Destroy(GetPuyo(x - 1, y).gameObject);
+                grid[x - 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x, y - 1))
+            {
+                Destroy(GetPuyo(x, y - 1).gameObject);
+                grid[x, y - 1] = null;
+            }
+        }
+        else if (x > 0 && x < width && y == 0)
+        {
+            if (CheckPlaceInGrid(x - 1, y))
+            {
+                Destroy(GetPuyo(x - 1, y).gameObject);
+                grid[x - 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y + 1))
+            {
+                Destroy(GetPuyo(x - 1, y + 1).gameObject);
+                grid[x - 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x, y + 1))
+            {
+                Destroy(GetPuyo(x, y + 1).gameObject);
+                grid[x, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y + 1))
+            {
+                Destroy(GetPuyo(x + 1, y + 1).gameObject);
+                grid[x + 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y))
+            {
+                Destroy(GetPuyo(x + 1, y).gameObject);
+                grid[x + 1, y] = null;
+            }
+        }
+        else if (x > 0 && x < width && y == width)
+        {
+            if (CheckPlaceInGrid(x - 1, y))
+            {
+                Destroy(GetPuyo(x - 1, y).gameObject);
+                grid[x - 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y - 1))
+            {
+                Destroy(GetPuyo(x - 1, y - 1).gameObject);
+                grid[x - 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x, y - 1))
+            {
+                Destroy(GetPuyo(x, y - 1).gameObject);
+                grid[x, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y - 1))
+            {
+                Destroy(GetPuyo(x + 1, y - 1).gameObject);
+                grid[x + 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y))
+            {
+                Destroy(GetPuyo(x + 1, y).gameObject);
+                grid[x + 1, y] = null;
+            }
+        }
+        else if (x == 0 && y > 0 && y < height)
+        {
+            if (CheckPlaceInGrid(x, y + 1))
+            {
+                Destroy(GetPuyo(x, y + 1).gameObject);
+                grid[x, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y + 1))
+            {
+                Destroy(GetPuyo(x + 1, y + 1).gameObject);
+                grid[x + 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y))
+            {
+                Destroy(GetPuyo(x + 1, y).gameObject);
+                grid[x + 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y - 1))
+            {
+                Destroy(GetPuyo(x + 1, y - 1).gameObject);
+                grid[x + 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x, y - 1))
+            {
+                Destroy(GetPuyo(x, y - 1).gameObject);
+                grid[x, y - 1] = null;
+            }
+        }
+        else if (x == width && y > 0 && y < height)
+        {
+            if (CheckPlaceInGrid(x, y + 1))
+            {
+                Destroy(GetPuyo(x, y + 1).gameObject);
+                grid[x, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y + 1))
+            {
+                Destroy(GetPuyo(x - 1, y + 1).gameObject);
+                grid[x - 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y))
+            {
+                Destroy(GetPuyo(x - 1, y).gameObject);
+                grid[x - 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y - 1))
+            {
+                Destroy(GetPuyo(x - 1, y - 1).gameObject);
+                grid[x - 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x, y - 1))
+            {
+                Destroy(GetPuyo(x, y - 1).gameObject);
+                grid[x, y - 1] = null;
+            }
+        }
+        else
+        {
+            if (CheckPlaceInGrid(x - 1, y))
+            {
+                Destroy(GetPuyo(x - 1, y).gameObject);
+                grid[x - 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y + 1))
+            {
+                Destroy(GetPuyo(x - 1, y + 1).gameObject);
+                grid[x - 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x, y + 1))
+            {
+                Destroy(GetPuyo(x, y + 1).gameObject);
+                grid[x, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y + 1))
+            {
+                Destroy(GetPuyo(x + 1, y + 1).gameObject);
+                grid[x + 1, y + 1] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y))
+            {
+                Destroy(GetPuyo(x + 1, y).gameObject);
+                grid[x + 1, y] = null;
+            }
+            if (CheckPlaceInGrid(x + 1, y - 1))
+            {
+                Destroy(GetPuyo(x + 1, y - 1).gameObject);
+                grid[x + 1, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x, y - 1))
+            {
+                Destroy(GetPuyo(x, y - 1).gameObject);
+                grid[x, y - 1] = null;
+            }
+            if (CheckPlaceInGrid(x - 1, y - 1))
+            {
+                Destroy(GetPuyo(x - 1, y - 1).gameObject);
+                grid[x - 1, y - 1] = null;
+            }
+        }
+    }
+    public void CountPuyo(Puyo puyo)
     {
         puyos.Add(puyo);
+    }
+    public int GetTotalPuyosSameColor()
+    {
+        return puyos.Count;
     }
     public void DeletePuyos()
     {
@@ -71,39 +344,35 @@ public class MyGameManager : MonoBehaviour
         {
             foreach(var puyo in puyos)
             {
-                int x = Mathf.RoundToInt(puyo.position.x);
-                int y = Mathf.RoundToInt(puyo.position.y);
-                Destroy(puyo.gameObject);
-                grid[x, y] = null;
-                puyosDestroyed++;
-            }
-
-            foreach(var puyo in puyos)
-            {
-                int x = Mathf.RoundToInt(puyo.position.x);
-                int y = Mathf.RoundToInt(puyo.position.y);
-                int actualX = -1;
-                if (actualX != x)
+                int x = Mathf.RoundToInt(puyo.transform.position.x);
+                int y = Mathf.RoundToInt(puyo.transform.position.y);
+                if (puyo.GetColor() == (int)colors.bomb)
                 {
-                    actualX = x;
-                    for (int i = y; i < height; i++)
-                    {
-                        if (grid[x, i])
-                        {
-                            grid[x, i].GetComponent<Puyo>().FallFromPiece();
-                            grid[x, i] = null;
-                        }
-                    }
+                    BombDestroy(puyo);
+                    Destroy(puyo.gameObject);
+                    grid[x, y] = null;
+                    puyosDestroyed++;
+                }
+                else
+                {
+                    Destroy(puyo.gameObject);
+                    grid[x, y] = null;
+                    puyosDestroyed++;
                 }
             }
+
+            FallPuyos();
 
             score += puyosDestroyed * pointsPerPuyo;
             puyosDestroyed = 0;
         }
+
         foreach(var puyo in FindObjectsOfType<Puyo>())
         {
             puyo.SetSearched(false);
         }
+
+        ClearPuyos();
     }
 
     //----------GameOver----------
@@ -141,5 +410,13 @@ public class MyGameManager : MonoBehaviour
     public int GetScore()
     {
         return score;
+    }
+    public float GetGrayProbability()
+    {
+        return grayProbability;
+    }
+    public float GetBombProbability()
+    {
+        return bombProbability;
     }
 }

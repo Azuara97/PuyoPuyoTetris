@@ -69,9 +69,29 @@ public class PlayerController : MonoBehaviour
     }
     void StartPuyosFall()
     {
-        foreach(Transform puyo in transform)
+        foreach (Transform puyo in transform)
         {
-            puyo.GetComponent<Puyo>().FallFromPiece();
+            gameManager.AddPuyoToGrid(puyo);
+        }
+
+        foreach (Transform puyo in transform)
+        {
+            if (puyo.GetComponent<Puyo>().CheckPlaceBelow())
+            {
+                puyo.GetComponent<Puyo>().FallFromPiece();
+            }
+        }
+    }
+    void StartPuyosCheckNeighbourds()
+    {
+        if (transform.GetChild(0).GetComponent<Puyo>().GetColor() == transform.GetChild(1).GetComponent<Puyo>().GetColor())
+        {
+            transform.GetChild(1).GetComponent<Puyo>().CheckNeighbours();
+        }
+        else
+        {
+            transform.GetChild(0).GetComponent<Puyo>().CheckNeighbours();
+            transform.GetChild(1).GetComponent<Puyo>().CheckNeighbours();
         }
     }
     void CheckLeftMove()
@@ -94,6 +114,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position += new Vector3(0f, 1f, 0f);
             StartPuyosFall();
+            StartPuyosCheckNeighbourds();
             gameManager.SpawnNewPuyo();
             enabled = false;
         }
