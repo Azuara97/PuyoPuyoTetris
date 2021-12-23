@@ -1231,6 +1231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe2ed499b8754978985afc1fd561679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grayProbability: 5
+  bombProbability: 5
 --- !u!4 &945520855
 Transform:
   m_ObjectHideFlags: 0

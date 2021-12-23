@@ -112,12 +112,14 @@ public class Puyo : MonoBehaviour
             if (gameManager.CheckPlaceInGrid(x + 1, y))
             {
                 var puyoRight = gameManager.GetPuyo(x + 1, y);
-                if (puyoRight.color != (int)colors.gray && !puyoRight.searched &&
-                    puyoRight.color == color || puyoRight.color == (int)colors.bomb)
+                if (puyoRight.color != (int)colors.gray && !puyoRight.searched)
                 {
-                    searched = true;
-                    puyoRight.CountPuyo();
-                    puyoRight.SearchNeighbours();
+                    if (puyoRight.color == color || puyoRight.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoRight.CountPuyo();
+                        puyoRight.SearchNeighbours();
+                    }
                 }
             }
         }
@@ -126,12 +128,14 @@ public class Puyo : MonoBehaviour
             if (gameManager.CheckPlaceInGrid(x - 1, y))
             {
                 var puyoLeft = gameManager.GetPuyo(x - 1, y);
-                if (puyoLeft.color != (int)colors.gray && !puyoLeft.searched &&
-                    puyoLeft.color == color || puyoLeft.color == (int)colors.bomb)
+                if (puyoLeft.color != (int)colors.gray && !puyoLeft.searched)
                 {
-                    searched = true;
-                    puyoLeft.CountPuyo();
-                    puyoLeft.SearchNeighbours();
+                    if (puyoLeft.color == color || puyoLeft.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoLeft.CountPuyo();
+                        puyoLeft.SearchNeighbours();
+                    }
                 }
             }
         }
@@ -140,24 +144,28 @@ public class Puyo : MonoBehaviour
             if (gameManager.CheckPlaceInGrid(x + 1, y))
             {
                 var puyoRight = gameManager.GetPuyo(x + 1, y);
-                if (puyoRight.color != (int)colors.gray && !puyoRight.searched &&
-                    puyoRight.color == color || puyoRight.color == (int)colors.bomb)
+                if (puyoRight.color != (int)colors.gray && !puyoRight.searched)
                 {
-                    searched = true;
-                    puyoRight.CountPuyo();
-                    puyoRight.SearchNeighbours();
+                    if (puyoRight.color == color || puyoRight.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoRight.CountPuyo();
+                        puyoRight.SearchNeighbours();
+                    }
                 }
             }
 
             if (gameManager.CheckPlaceInGrid(x - 1, y))
             {
                 var puyoLeft = gameManager.GetPuyo(x - 1, y);
-                if (puyoLeft.color != (int)colors.gray && !puyoLeft.searched &&
-                    puyoLeft.color == color || puyoLeft.color == (int)colors.bomb)
+                if (puyoLeft.color != (int)colors.gray && !puyoLeft.searched)
                 {
-                    searched = true;
-                    puyoLeft.CountPuyo();
-                    puyoLeft.SearchNeighbours();
+                    if (puyoLeft.color == color || puyoLeft.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoLeft.CountPuyo();
+                        puyoLeft.SearchNeighbours();
+                    }
                 }
             }
         }
@@ -169,12 +177,14 @@ public class Puyo : MonoBehaviour
             if (gameManager.CheckPlaceInGrid(x, y + 1))
             {
                 var puyoUp = gameManager.GetPuyo(x, y + 1);
-                if (puyoUp.color != (int)colors.gray && !puyoUp.searched &&
-                    puyoUp.color == color || puyoUp.color == (int)colors.bomb)
+                if (puyoUp.color != (int)colors.gray && !puyoUp.searched)
                 {
-                    searched = true;
-                    puyoUp.CountPuyo();
-                    puyoUp.SearchNeighbours();
+                    if (puyoUp.color == color || puyoUp.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoUp.CountPuyo();
+                        puyoUp.SearchNeighbours();
+                    }
                 }
             }
         }
@@ -183,12 +193,14 @@ public class Puyo : MonoBehaviour
             if (gameManager.CheckPlaceInGrid(x, y - 1))
             {
                 var puyoDown = gameManager.GetPuyo(x, y - 1);
-                if (puyoDown.color != (int)colors.gray && !puyoDown.searched &&
-                    puyoDown.color == color || puyoDown.color == (int)colors.bomb)
+                if (puyoDown.color != (int)colors.gray && !puyoDown.searched)
                 {
-                    searched = true;
-                    puyoDown.CountPuyo();
-                    puyoDown.SearchNeighbours();
+                    if (puyoDown.color == color || puyoDown.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoDown.CountPuyo();
+                        puyoDown.SearchNeighbours();
+                    }
                 }
             }
         }
@@ -197,24 +209,28 @@ public class Puyo : MonoBehaviour
             if (gameManager.CheckPlaceInGrid(x, y + 1))
             {
                 var puyoUp = gameManager.GetPuyo(x, y + 1);
-                if (puyoUp.color != (int)colors.gray && !puyoUp.searched &&
-                    puyoUp.color == color || puyoUp.color == (int)colors.bomb)
+                if (puyoUp.color != (int)colors.gray && !puyoUp.searched)
                 {
-                    searched = true;
-                    puyoUp.CountPuyo();
-                    puyoUp.SearchNeighbours();
+                    if (puyoUp.color == color || puyoUp.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoUp.CountPuyo();
+                        puyoUp.SearchNeighbours();
+                    }
                 }
             }
 
             if (gameManager.CheckPlaceInGrid(x, y - 1))
             {
                 var puyoDown = gameManager.GetPuyo(x, y - 1);
-                if (puyoDown.color != (int)colors.gray && !puyoDown.searched &&
-                    puyoDown.color == color || puyoDown.color == (int)colors.bomb)
+                if (puyoDown.color != (int)colors.gray && !puyoDown.searched)
                 {
-                    searched = true;
-                    puyoDown.CountPuyo();
-                    puyoDown.SearchNeighbours();
+                    if (puyoDown.color == color || puyoDown.color == (int)colors.bomb)
+                    {
+                        searched = true;
+                        puyoDown.CountPuyo();
+                        puyoDown.SearchNeighbours();
+                    }
                 }
             }
         }
@@ -227,7 +243,6 @@ public class Puyo : MonoBehaviour
         SearchInX(x, y);
         SearchInY(x, y);
 
-        //Debug.Log(gameManager.GetTotalPuyosSameColor());
         gameManager.DeletePuyos();
     }
     void CountPuyo()

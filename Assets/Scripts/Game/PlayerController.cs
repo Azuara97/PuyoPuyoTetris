@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     //Others
     MyGameManager gameManager;
+    enum colors { red, green, blue, yellow, purple, gray, bomb }
 
     void Start()
     {
@@ -84,14 +85,12 @@ public class PlayerController : MonoBehaviour
     }
     void StartPuyosCheckNeighbourds()
     {
-        if (transform.GetChild(0).GetComponent<Puyo>().GetColor() == transform.GetChild(1).GetComponent<Puyo>().GetColor())
+        foreach(var puyo in FindObjectsOfType<Puyo>())
         {
-            transform.GetChild(1).GetComponent<Puyo>().CheckNeighbours();
-        }
-        else
-        {
-            transform.GetChild(0).GetComponent<Puyo>().CheckNeighbours();
-            transform.GetChild(1).GetComponent<Puyo>().CheckNeighbours();
+            if (puyo.GetColor() != (int)colors.bomb || puyo.GetColor() != (int)colors.gray)
+            {
+                puyo.CheckNeighbours();
+            }
         }
     }
     void CheckLeftMove()

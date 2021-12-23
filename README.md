@@ -8,6 +8,6 @@ PlayerController - Es el input del jugador
 Puyo - La clase individual del puyo que maneja su caida y color
 MenusManager - Se encarga del manejo entre menus
 
-Por tiempo no pude hacer mejor assets y tiene un bug que algunos puyos se quedan flotando a algunas veces y solo se eliminan 4 puyos aunque tengas 5 o mas conectados.
+La destruccion de puyos y su caida quedo arreglada. Se agregaron los puyos grises que no se destruyen y los puyos blancos que si se destruyen con un combo pero no destruye a los de alrededor.
 
 Como actualmente trabajo en mac no pude sacar el .exe porque todavia no tengo mi PC con windows conmigo en estos momentos.
